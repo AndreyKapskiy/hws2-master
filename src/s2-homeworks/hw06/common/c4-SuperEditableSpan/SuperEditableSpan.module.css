@@ -1,11 +1,16 @@
 .spanBlock {
+    width: 400px;
 }
 
 .span {
+    color: blue;
+    margin-left: 10px;
 }
 
 .input {
 }
 
 .pen {
+    width: 24px;
+    height: 24px;
 }
