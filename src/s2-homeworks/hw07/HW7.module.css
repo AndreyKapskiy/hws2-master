@@ -1,2 +1,7 @@
 .container {
+    margin-top: 40px;
+    margin-left: 70px;
+    display: flex;
+    max-width: 300px;
+    justify-content: space-between;
 }
