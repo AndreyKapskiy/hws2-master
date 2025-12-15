@@ -23,6 +23,13 @@ const HW13 = () => {
     const [isLoading, setIsLoading] = useState(false)
 
     const send = (x?: boolean | null) => () => {
+
+        const url =
+            x === null
+                ? 'https://xxxxxx.ccc' // имитация запроса на не корректный адрес
+                : "https://samurai.it-incubator.io/api/3.0/homework/test";
+
+
   setCode('')
   setImage('')
   setText('')
@@ -30,35 +37,54 @@ const HW13 = () => {
   setIsLoading(true)
   
   // Имитация асинхронного запроса
-  setTimeout(() => {
-    setIsLoading(false)
+         axios
+            .post(url, {success: x})
+            .then((res) => {
+                // Успешный ответ (200)
+                setIsLoading(false)
+                setCode('Код 200!')
+                setImage(success200)
+                setText('...всё ок)')
+                setInfo('код 200 - обычно означает что скорее всего всё ок)')
+            })
     
-    if (x === true) {
-      setCode('Код 200!')
-      setImage(success200)
-      setText('...всё ок)')
-      setInfo('код 200 - обычно означает что скорее всего всё ок)')
-    } 
-    else if (x === false) {
-      setCode('Ошибка 500!')
-      setImage(error500)
-      setText('эмитация ошибки на сервере')
-      setInfo('ошибка 500 - обычно означает что что-то сломалось на сервере, например база данных)')
+            .catch((e) => {
+                // Обработка ошибок
+                setIsLoading(false)
+                
+                if (e.response) {
+                    // Сервер ответил с кодом ошибки
+                    const status = e.response.status
+                    
+                    if (status === 400) {
+                        // Ошибка 400
+                        setCode('Ошибка 400!')
+                        setImage(error400)
+                        setText('Ты не отправил success в body вообще!')
+                        setInfo('ошибка 400 - обычно означает что скорее всего фронт отправил что-то не то на бэк!')
+                    } else if (status === 500) {
+                        // Ошибка 500
+                        setCode('Ошибка 500!')
+                        setImage(error500)
+                        setText('эмитация ошибки на сервере')
+                        setInfo('ошибка 500 - обычно означает что что-то сломалось на сервере, например база данных)')
+                    } else {
+                        // Другие коды ошибок
+                        setCode('Error!')
+                        setImage(errorUnknown)
+                        setText(e.message)
+                        setInfo(e.code)
+                    }
+                } else {
+                    // Сетевая ошибка (CORS или сервер недоступен)
+                    setCode('Error!')
+                    setImage(errorUnknown)
+                    setText(e.message || 'Network Error')
+                    setInfo(e.code || 'AxiosError')
+                }
+            })
     }
-    else if (x === undefined) {
-      setCode('Ошибка 400!')
-      setImage(error400)
-      setText('Ты не отправил success в body вообще!')
-      setInfo('ошибка 400 - обычно означает что скорее всего фронт отправил что-то не то на бэк!')
-    }
-    else if (x === null) {
-      setCode('Error!')
-      setImage(errorUnknown)
-      setText('Network Error')
-      setInfo('AxiosError')
-    }
-  }, 800) // 0.8 секунды задержки
-}
+
 
     return (
         <div id={'hw13'}>
