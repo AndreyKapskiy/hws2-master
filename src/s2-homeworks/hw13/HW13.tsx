@@ -73,14 +73,14 @@ const HW13 = () => {
                         setCode('Error!')
                         setImage(errorUnknown)
                         setText(e.message)
-                        setInfo(e.code)
+                        setInfo('Error')
                     }
                 } else {
                     // Сетевая ошибка (CORS или сервер недоступен)
                     setCode('Error!')
                     setImage(errorUnknown)
                     setText(e.message || 'Network Error')
-                    setInfo(e.code || 'AxiosError')
+                    setInfo('Error')
                 }
             })
     }
